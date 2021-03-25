@@ -165,19 +165,117 @@ generado](./doc/output.jpg)
 
 También se genera un archivo CSV para comparar resultados.
 
-  Palabra    TF         IDF        TDxIDF
-  ---------- ---------- ---------- ---------
-  �nico      0.000677   2.170261   0.00147
-  �ndole     0.000677   2.170261   0.00147
-  �tnicos    0.000677   2.170261   0.00147
-  �l         0.001355   1.869231   0.00253
-  y          0.000677   2.170261   0.00147
-  voto       0.001355   1.869231   0.00253
-  voluntad   0.002033   1.693140   0.00344
-  vivienda   0.000677   2.170261   0.00147
-  viudez     0.000677   2.170261   0.00147
-  violen     0.000677   2.170261   0.00147
-  ...        ...        ...        ...
+ <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Palabra</th>
+<th scope="col" class="org-right">TF</th>
+<th scope="col" class="org-right">IDF</th>
+<th scope="col" class="org-right">TDxIDF</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="org-left">�nico</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">�ndole</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">�tnicos</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">�l</td>
+<td class="org-right">0.001355</td>
+<td class="org-right">1.869231</td>
+<td class="org-right">0.00253</td>
+</tr>
+
+
+<tr>
+<td class="org-left">y</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">voto</td>
+<td class="org-right">0.001355</td>
+<td class="org-right">1.869231</td>
+<td class="org-right">0.00253</td>
+</tr>
+
+
+<tr>
+<td class="org-left">voluntad</td>
+<td class="org-right">0.002033</td>
+<td class="org-right">1.693140</td>
+<td class="org-right">0.00344</td>
+</tr>
+
+
+<tr>
+<td class="org-left">vivienda</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">viudez</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">violen</td>
+<td class="org-right">0.000677</td>
+<td class="org-right">2.170261</td>
+<td class="org-right">0.00147</td>
+</tr>
+
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+</tr>
+</tbody>
+</table>
+
 
 
 <a id="sec:compilacion"></a>
