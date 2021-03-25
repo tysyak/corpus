@@ -1,41 +1,60 @@
-# Introducción {#sec:introduccion}
+
+# Table of Contents
+
+1.  [Introducción](#sec:introduccion)
+    1.  [Frecuencia de término](#sec:frec-de-term)
+    2.  [Frecuencia de documento inversa](#sec:frec-de-docum)
+    3.  [Frecuencia de término: frecuencia de documento inversa](#sec:frec-de-term-1)
+2.  [Desarrollo](#sec:desarrollo)
+3.  [Compilación y ejecución](#sec:compilacion)
+
+
+<a id="sec:introduccion"></a>
+
+# Introducción
 
 medida Tf-idf es una medida estadística que se utiliza en la
 recuperación de información para evaluar la relevancia de los términos
 en los documentos de una colección de documentos.
 
--   El tf-idf es el producto de dos estadísticas, frecuencia de término
-    y frecuencia de documento inversa Hay varias formas de determinar
-    los valores exactos de ambas estadísticas.
+-   El tf-idf es el producto de dos estadísticas, frecuencia de término y
+    frecuencia de documento inversa Hay varias formas de determinar los
+    valores exactos de ambas estadísticas.
 
 -   Una fórmula que tiene como objetivo definir la importancia de una
     palabra clave o frase dentro de un documento o una página web.
 
-## Frecuencia de término {#sec:frec-de-term}
 
-La frecuencia del término, $tf(t, d)$, es la frecuencia del término $t$.
-$$tf(t,d)\frac{f_{t,d}}{\sum_{t^{i}\in d}f_{t^{i}, d}}$$ donde
-$f_{t, d}$ es el recuento bruto de un término en un documento, es decir,
-el número de veces que el término $t$ aparece en el documento $d$. Hay
+<a id="sec:frec-de-term"></a>
+
+## Frecuencia de término
+
+La frecuencia del término, \(tf(t, d)\), es la frecuencia del término \(t\).
+\[tf(t,d)\frac{f_{t,d}}{\sum_{t^{i}\in d}f_{t^{i}, d}}\] donde
+\(f_{t, d}\) es el recuento bruto de un término en un documento, es decir,
+el número de veces que el término \(t\) aparece en el documento \(d\). Hay
 varias otras formas de definir la frecuencia de los términos:
 
--   el recuento bruto en sí mismo: $tf(t, d) = f(t, d)$.
+-   el recuento bruto en sí mismo: \(tf(t, d) = f(t, d)\).
 
--   "Frecuencias" booleanas: $tf(t, d ) = 1$ si $t$ ocurre en $d$ y $0$
-    en caso contrario.
+-   &ldquo;Frecuencias&rdquo; booleanas: \(tf(t, d ) = 1\) si \(t\) ocurre en \(d\) y \(0\) en
+    caso contrario.
 
 -   frecuencia de término ajustada a la longitud del documento:
-    $tf(t, d) = \frac{f_{t, d}}{(numero\ de\ palabras\ en\ d)}$.
+    \(tf(t, d) = \frac{f_{t, d}}{(numero\ de\ palabras\ en\ d)}\).
 
 -   frecuencia escalada logarítmicamente:
-    $tf(t, d) = \log{(1 + f_{ t , d})}$.
+    \(tf(t, d) = \log{(1 + f_{ t , d})}\).
 
 -   frecuencia aumentada, para evitar un sesgo hacia documentos más
     largos, por ejemplo, frecuencia sin procesar dividida por la
     frecuencia sin procesar del término más frecuente en el documento.
-    $$tf(t,d)=0.5+0.5 \times \frac{f_{t, d}}{max\{f_{t^{i}, d}: t^{i} \in d\}}$$
+    \[tf(t,d)=0.5+0.5 \times \frac{f_{t, d}}{max\{f_{t^{i}, d}: t^{i} \in d\}}\]
 
-## Frecuencia de documento inversa {#sec:frec-de-docum}
+
+<a id="sec:frec-de-docum"></a>
+
+## Frecuencia de documento inversa
 
 La frecuencia inversa del documento es una medida de cuánta información
 proporciona la palabra, es decir, si es común o rara en todos los
@@ -44,55 +63,33 @@ documentos que contienen la palabra (obtenida dividiendo el número total
 de documentos por el número de documentos que contienen el término, y
 luego tomando el logaritmo de ese cociente):
 
--   $N$: Número total de documentos en el corpus $N = |D|$.
+-   \(N\): Número total de documentos en el corpus \(N = |D|\).
 
--   $|\{d \in D : t \in d\}|$: número de documentos donde aparece el
-    término, es decir, si el término no está en el corpus, esto dará
-    lugar a una división por cero. Por lo tanto, es común ajustar el
-    denominador a $tf(t,d) \ne 01 + |\{d \in D : t \in d \}|$
+-   \(|\{d \in D : t \in d\}|\): número de documentos donde aparece el
+    término, es decir, si el término no está en el corpus, esto dará lugar
+    a una división por cero. Por lo tanto, es común ajustar el denominador
+    a \(tf(t,d) \ne 01 + |\{d \in D : t \in d \}|\)
 
-## Frecuencia de término: frecuencia de documento inversa {#sec:frec-de-term-1}
 
-Entonces tf -- idf se calcula como:
-$$tf \times idf(t,d,D) = tf(t,d) \cdot idf(t,D)$$
+<a id="sec:frec-de-term-1"></a>
 
-# Desarrollo {#sec:desarrollo}
+## Frecuencia de término: frecuencia de documento inversa
+
+Entonces tf &#x2013; idf se calcula como:
+\[tf \times idf(t,d,D) = tf(t,d) \cdot idf(t,D)\]
+
+
+<a id="sec:desarrollo"></a>
+
+# Desarrollo
 
 Para calcular la frecuencia de término
-(sección [1.1](#sec:frec-de-term){reference-type="ref"
-reference="sec:frec-de-term"}) se elimino los espacios, comas y palabras
-de poca utilidad para despues guradarlas en una lista; para el manejo
-del lenguaje se convirtieron en átomos cada palabra.
-
-``` {.elixir firstline="5" lastline="26"}
-defmodule Corpus do
-  @moduledoc """
-  Documentation for `Corpus`.
-  """
-  @doc"""
-  Devuelve la cantidad que el atomo aparece en la lista de documentos(una vez)
-  """
-  def atomo_en_lista(atomo, documentos) do
-    {
-      atomo,
-      for(x <- documentos, do: atomo in x)
-      |> Enum.reject(fn x -> x==false end)
-      |> length
-    }
-  end
-
-  @doc false
-  def main(args \\ "./textos/es.txt") do
-    case File.read(args) do
-      {:ok, body} ->
-        list_all_body = body
-        |> String.downcase
-        |> delete_simbols
-        |> String.split
-        |> lstring_to_latom
-        # Obtenemos la lista en de todas las palabras en átomos
+(sección [1.1](#sec:frec-de-term)) se elimino los espacios, comas y
+palabras de poca utilidad para despues guradarlas en una lista; para el
+manejo del lenguaje se convirtieron en átomos cada palabra.
 
 
+```elixir
         freq_words_all_text = list_all_body
         |> Enum.frequencies
         |> Map.to_list
@@ -108,185 +105,13 @@ defmodule Corpus do
         |> Enum.reverse
         |> Enum.uniq
         # Veces que aparece cada palabra en los 10 documentos
-
-        idf_list = for {x, _y} <- vc do
-          {x, :math.log10(length(ten_doc)/(vc[x])) }
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-
-        tf_list =  for {key_all, val_all} <- freq_words_all_text do
-          {key_all, val_all/length(list_all_body)}
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-        # Obenemos la Tf de cada palabra
-
-
-
-        ## Aqui, usando una libreria del autor, dibujamos un gráfico
-        ##
-        ## https://plotly.com
-        equis = for({x,_y}<-tf_list, do: x)
-        vals_idf = for {_x,y}<-idf_list, do: y
-        vals_tf = for {_x,y}<-tf_list, do: y
-        vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
-
-
-        tf = %{
-          x: equis,
-          y: vals_tf,
-          type: "scatter",
-          mode: 'lines+markers',
-          connectgaps: true,
-          name: "TF"
-        }
-
-        idf = %{
-          x: equis,
-          y: vals_idf,
-          type: "scatter",
-          name: "IDF"
-        }
-
-        # Producto de TF y IDF
-        tf_x_idf = %{
-          x: equis,
-          y: vals_tfxidf,
-          type: "scatter",
-          name: "tf*idf"
-        }
-
-        # dibujamos gráficos
-        [idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{IDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TFXIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf,idf,tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF,IDF,TFxIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-        # Terminamos de dibujar los gráficos
-
-        # escribimos el archivo por csv
-        file = File.open!('out.csv', [:write])
-        IO.write(file, "Palabra,TF,IDF,TDxIDF\n")
-        to_csv(equis, vals_tf, vals_idf, vals_tfxidf, length(equis), file)
-        File.close(file)
-        # terminamos de escribor el archivo
-
-
-        System.halt(0) # salida 0 a terminal
-
-      {:error, _error} ->
-        IO.puts "Error, verifique el archivo"
-        System.halt(1) #
-        # Salida a 1 en la terminal
-    end
-   end
-
-  @doc"""
-  Eliminamos los símbolos y palabras que no querramos, por ejemplo «de, la, los,...»
-  """
-  def delete_simbols(string) do
-    string #Regex.replace(~r/[,|;|\.|\(|\)|\d]+/, string, "")
-    |> String.replace(
-      ~r/,|;|\.|\(|\)|\d+|\sl(a|o)s?\s|\s+l(a|o)s\s|\sde(\sl(a|o)s?)?\s|\s(a|e|o)\s|\sy\s|\sel\s/u,
-    " "
-    )
-  end
-
-  @doc"""
-  Esta Funcion solo conbierte una lista con cadenas a atomos
-  """
-  def lstring_to_latom(list_string) do
-    for x <- list_string do
-      String.to_atom(x)
-    end
-  end
-
-  @doc"""
-  Esta funcion se encarga de llenar el archivo csv
-
-  | palabra | TF | IDF | TFxIDF |
-  """
-  def to_csv(_atoms, _td, _ids, _tdxids, count, _file) when count <= 1 do
-    :ok
-  end
-  def to_csv(atoms, td, ids, tdxids, count, file) do
-    [h_atom| t_atom] = atoms
-    [h_td| t_td] = td
-    [h_ids| t_ids] = ids
-    [h_tdxids| t_tdxids] = tdxids
-
-    IO.write(file, "#{Atom.to_string(h_atom)},#{h_td},#{h_ids},#{h_tdxids}\n")
-
-    to_csv(t_atom, t_td, t_ids, t_tdxids, count - 1, file)
-  end
-
-end
 ```
 
 Posteriormente obtemos la concurrencia de cada palabra (no se usa) en el
 texto, e inmediatamente se separa la palabras en listas de diez dentro
 de una lista.
 
-``` {.elixir firstline="29" lastline="43"}
-defmodule Corpus do
-  @moduledoc """
-  Documentation for `Corpus`.
-  """
-  @doc"""
-  Devuelve la cantidad que el atomo aparece en la lista de documentos(una vez)
-  """
-  def atomo_en_lista(atomo, documentos) do
-    {
-      atomo,
-      for(x <- documentos, do: atomo in x)
-      |> Enum.reject(fn x -> x==false end)
-      |> length
-    }
-  end
-
-  @doc false
-  def main(args \\ "./textos/es.txt") do
-    case File.read(args) do
-      {:ok, body} ->
-        list_all_body = body
-        |> String.downcase
-        |> delete_simbols
-        |> String.split
-        |> lstring_to_latom
-        # Obtenemos la lista en de todas las palabras en átomos
-
-
+```elixir
         freq_words_all_text = list_all_body
         |> Enum.frequencies
         |> Map.to_list
@@ -302,743 +127,41 @@ defmodule Corpus do
         |> Enum.reverse
         |> Enum.uniq
         # Veces que aparece cada palabra en los 10 documentos
-
-        idf_list = for {x, _y} <- vc do
-          {x, :math.log10(length(ten_doc)/(vc[x])) }
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-
-        tf_list =  for {key_all, val_all} <- freq_words_all_text do
-          {key_all, val_all/length(list_all_body)}
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-        # Obenemos la Tf de cada palabra
-
-
-
-        ## Aqui, usando una libreria del autor, dibujamos un gráfico
-        ##
-        ## https://plotly.com
-        equis = for({x,_y}<-tf_list, do: x)
-        vals_idf = for {_x,y}<-idf_list, do: y
-        vals_tf = for {_x,y}<-tf_list, do: y
-        vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
-
-
-        tf = %{
-          x: equis,
-          y: vals_tf,
-          type: "scatter",
-          mode: 'lines+markers',
-          connectgaps: true,
-          name: "TF"
-        }
-
-        idf = %{
-          x: equis,
-          y: vals_idf,
-          type: "scatter",
-          name: "IDF"
-        }
-
-        # Producto de TF y IDF
-        tf_x_idf = %{
-          x: equis,
-          y: vals_tfxidf,
-          type: "scatter",
-          name: "tf*idf"
-        }
-
-        # dibujamos gráficos
-        [idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{IDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TFXIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf,idf,tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF,IDF,TFxIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-        # Terminamos de dibujar los gráficos
-
-        # escribimos el archivo por csv
-        file = File.open!('out.csv', [:write])
-        IO.write(file, "Palabra,TF,IDF,TDxIDF\n")
-        to_csv(equis, vals_tf, vals_idf, vals_tfxidf, length(equis), file)
-        File.close(file)
-        # terminamos de escribor el archivo
-
-
-        System.halt(0) # salida 0 a terminal
-
-      {:error, _error} ->
-        IO.puts "Error, verifique el archivo"
-        System.halt(1) #
-        # Salida a 1 en la terminal
-    end
-   end
-
-  @doc"""
-  Eliminamos los símbolos y palabras que no querramos, por ejemplo «de, la, los,...»
-  """
-  def delete_simbols(string) do
-    string #Regex.replace(~r/[,|;|\.|\(|\)|\d]+/, string, "")
-    |> String.replace(
-      ~r/,|;|\.|\(|\)|\d+|\sl(a|o)s?\s|\s+l(a|o)s\s|\sde(\sl(a|o)s?)?\s|\s(a|e|o)\s|\sy\s|\sel\s/u,
-    " "
-    )
-  end
-
-  @doc"""
-  Esta Funcion solo conbierte una lista con cadenas a atomos
-  """
-  def lstring_to_latom(list_string) do
-    for x <- list_string do
-      String.to_atom(x)
-    end
-  end
-
-  @doc"""
-  Esta funcion se encarga de llenar el archivo csv
-
-  | palabra | TF | IDF | TFxIDF |
-  """
-  def to_csv(_atoms, _td, _ids, _tdxids, count, _file) when count <= 1 do
-    :ok
-  end
-  def to_csv(atoms, td, ids, tdxids, count, file) do
-    [h_atom| t_atom] = atoms
-    [h_td| t_td] = td
-    [h_ids| t_ids] = ids
-    [h_tdxids| t_tdxids] = tdxids
-
-    IO.write(file, "#{Atom.to_string(h_atom)},#{h_td},#{h_ids},#{h_tdxids}\n")
-
-    to_csv(t_atom, t_td, t_ids, t_tdxids, count - 1, file)
-  end
-
-end
 ```
 
-Se calcula $idf$ usando la formula del logaritmo planteada en las
-sección [1.2](#sec:frec-de-docum){reference-type="ref"
-reference="sec:frec-de-docum"}:
+Se calcula \(idf\) usando la formula del logaritmo planteada en las
+sección [1.2](#sec:frec-de-docum):
 
-``` {.elixir firstline="45" lastline="49"}
-defmodule Corpus do
-  @moduledoc """
-  Documentation for `Corpus`.
-  """
-  @doc"""
-  Devuelve la cantidad que el atomo aparece en la lista de documentos(una vez)
-  """
-  def atomo_en_lista(atomo, documentos) do
-    {
-      atomo,
-      for(x <- documentos, do: atomo in x)
-      |> Enum.reject(fn x -> x==false end)
-      |> length
-    }
-  end
-
-  @doc false
-  def main(args \\ "./textos/es.txt") do
-    case File.read(args) do
-      {:ok, body} ->
-        list_all_body = body
-        |> String.downcase
-        |> delete_simbols
-        |> String.split
-        |> lstring_to_latom
-        # Obtenemos la lista en de todas las palabras en átomos
-
-
-        freq_words_all_text = list_all_body
-        |> Enum.frequencies
-        |> Map.to_list
-        |> List.keysort(1)
-        |> Enum.reverse
-        # Obtenemos las concurrencia de las palabras del texto
-
-        ten_doc = Enum.chunk_every(list_all_body, 10)
-        # aqui cortamos a 10
-
-        vc = for(x <- list_all_body, do: atomo_en_lista(x, ten_doc))
-        |> List.keysort(1)
-        |> Enum.reverse
-        |> Enum.uniq
-        # Veces que aparece cada palabra en los 10 documentos
-
+```elixir
         idf_list = for {x, _y} <- vc do
           {x, :math.log10(length(ten_doc)/(vc[x])) }
         end
         |> List.keysort(0)
         |> Enum.reverse
-
-        tf_list =  for {key_all, val_all} <- freq_words_all_text do
-          {key_all, val_all/length(list_all_body)}
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-        # Obenemos la Tf de cada palabra
-
-
-
-        ## Aqui, usando una libreria del autor, dibujamos un gráfico
-        ##
-        ## https://plotly.com
-        equis = for({x,_y}<-tf_list, do: x)
-        vals_idf = for {_x,y}<-idf_list, do: y
-        vals_tf = for {_x,y}<-tf_list, do: y
-        vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
-
-
-        tf = %{
-          x: equis,
-          y: vals_tf,
-          type: "scatter",
-          mode: 'lines+markers',
-          connectgaps: true,
-          name: "TF"
-        }
-
-        idf = %{
-          x: equis,
-          y: vals_idf,
-          type: "scatter",
-          name: "IDF"
-        }
-
-        # Producto de TF y IDF
-        tf_x_idf = %{
-          x: equis,
-          y: vals_tfxidf,
-          type: "scatter",
-          name: "tf*idf"
-        }
-
-        # dibujamos gráficos
-        [idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{IDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TFXIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf,idf,tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF,IDF,TFxIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-        # Terminamos de dibujar los gráficos
-
-        # escribimos el archivo por csv
-        file = File.open!('out.csv', [:write])
-        IO.write(file, "Palabra,TF,IDF,TDxIDF\n")
-        to_csv(equis, vals_tf, vals_idf, vals_tfxidf, length(equis), file)
-        File.close(file)
-        # terminamos de escribor el archivo
-
-
-        System.halt(0) # salida 0 a terminal
-
-      {:error, _error} ->
-        IO.puts "Error, verifique el archivo"
-        System.halt(1) #
-        # Salida a 1 en la terminal
-    end
-   end
-
-  @doc"""
-  Eliminamos los símbolos y palabras que no querramos, por ejemplo «de, la, los,...»
-  """
-  def delete_simbols(string) do
-    string #Regex.replace(~r/[,|;|\.|\(|\)|\d]+/, string, "")
-    |> String.replace(
-      ~r/,|;|\.|\(|\)|\d+|\sl(a|o)s?\s|\s+l(a|o)s\s|\sde(\sl(a|o)s?)?\s|\s(a|e|o)\s|\sy\s|\sel\s/u,
-    " "
-    )
-  end
-
-  @doc"""
-  Esta Funcion solo conbierte una lista con cadenas a atomos
-  """
-  def lstring_to_latom(list_string) do
-    for x <- list_string do
-      String.to_atom(x)
-    end
-  end
-
-  @doc"""
-  Esta funcion se encarga de llenar el archivo csv
-
-  | palabra | TF | IDF | TFxIDF |
-  """
-  def to_csv(_atoms, _td, _ids, _tdxids, count, _file) when count <= 1 do
-    :ok
-  end
-  def to_csv(atoms, td, ids, tdxids, count, file) do
-    [h_atom| t_atom] = atoms
-    [h_td| t_td] = td
-    [h_ids| t_ids] = ids
-    [h_tdxids| t_tdxids] = tdxids
-
-    IO.write(file, "#{Atom.to_string(h_atom)},#{h_td},#{h_ids},#{h_tdxids}\n")
-
-    to_csv(t_atom, t_td, t_ids, t_tdxids, count - 1, file)
-  end
-
-end
 ```
 
-Se calcula $tf$ usando la formula del el recuento bruto en sí mismo
-planteada en las sección [1.1](#sec:frec-de-term){reference-type="ref"
-reference="sec:frec-de-term"}:
-
-``` {.elixir firstline="51" lastline="56"}
-defmodule Corpus do
-  @moduledoc """
-  Documentation for `Corpus`.
-  """
-  @doc"""
-  Devuelve la cantidad que el atomo aparece en la lista de documentos(una vez)
-  """
-  def atomo_en_lista(atomo, documentos) do
-    {
-      atomo,
-      for(x <- documentos, do: atomo in x)
-      |> Enum.reject(fn x -> x==false end)
-      |> length
-    }
-  end
-
-  @doc false
-  def main(args \\ "./textos/es.txt") do
-    case File.read(args) do
-      {:ok, body} ->
-        list_all_body = body
-        |> String.downcase
-        |> delete_simbols
-        |> String.split
-        |> lstring_to_latom
-        # Obtenemos la lista en de todas las palabras en átomos
-
-
-        freq_words_all_text = list_all_body
-        |> Enum.frequencies
-        |> Map.to_list
-        |> List.keysort(1)
-        |> Enum.reverse
-        # Obtenemos las concurrencia de las palabras del texto
-
-        ten_doc = Enum.chunk_every(list_all_body, 10)
-        # aqui cortamos a 10
-
-        vc = for(x <- list_all_body, do: atomo_en_lista(x, ten_doc))
-        |> List.keysort(1)
-        |> Enum.reverse
-        |> Enum.uniq
-        # Veces que aparece cada palabra en los 10 documentos
-
-        idf_list = for {x, _y} <- vc do
-          {x, :math.log10(length(ten_doc)/(vc[x])) }
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-
+Se calcula \(tf\) usando la formula del el recuento bruto en sí mismo
+planteada en las sección [1.1](#sec:frec-de-term):
+```elixir
         tf_list =  for {key_all, val_all} <- freq_words_all_text do
           {key_all, val_all/length(list_all_body)}
         end
         |> List.keysort(0)
         |> Enum.reverse
         # Obenemos la Tf de cada palabra
-
-
-
-        ## Aqui, usando una libreria del autor, dibujamos un gráfico
-        ##
-        ## https://plotly.com
-        equis = for({x,_y}<-tf_list, do: x)
-        vals_idf = for {_x,y}<-idf_list, do: y
-        vals_tf = for {_x,y}<-tf_list, do: y
-        vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
-
-
-        tf = %{
-          x: equis,
-          y: vals_tf,
-          type: "scatter",
-          mode: 'lines+markers',
-          connectgaps: true,
-          name: "TF"
-        }
-
-        idf = %{
-          x: equis,
-          y: vals_idf,
-          type: "scatter",
-          name: "IDF"
-        }
-
-        # Producto de TF y IDF
-        tf_x_idf = %{
-          x: equis,
-          y: vals_tfxidf,
-          type: "scatter",
-          name: "tf*idf"
-        }
-
-        # dibujamos gráficos
-        [idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{IDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TFXIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf,idf,tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF,IDF,TFxIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-        # Terminamos de dibujar los gráficos
-
-        # escribimos el archivo por csv
-        file = File.open!('out.csv', [:write])
-        IO.write(file, "Palabra,TF,IDF,TDxIDF\n")
-        to_csv(equis, vals_tf, vals_idf, vals_tfxidf, length(equis), file)
-        File.close(file)
-        # terminamos de escribor el archivo
-
-
-        System.halt(0) # salida 0 a terminal
-
-      {:error, _error} ->
-        IO.puts "Error, verifique el archivo"
-        System.halt(1) #
-        # Salida a 1 en la terminal
-    end
-   end
-
-  @doc"""
-  Eliminamos los símbolos y palabras que no querramos, por ejemplo «de, la, los,...»
-  """
-  def delete_simbols(string) do
-    string #Regex.replace(~r/[,|;|\.|\(|\)|\d]+/, string, "")
-    |> String.replace(
-      ~r/,|;|\.|\(|\)|\d+|\sl(a|o)s?\s|\s+l(a|o)s\s|\sde(\sl(a|o)s?)?\s|\s(a|e|o)\s|\sy\s|\sel\s/u,
-    " "
-    )
-  end
-
-  @doc"""
-  Esta Funcion solo conbierte una lista con cadenas a atomos
-  """
-  def lstring_to_latom(list_string) do
-    for x <- list_string do
-      String.to_atom(x)
-    end
-  end
-
-  @doc"""
-  Esta funcion se encarga de llenar el archivo csv
-
-  | palabra | TF | IDF | TFxIDF |
-  """
-  def to_csv(_atoms, _td, _ids, _tdxids, count, _file) when count <= 1 do
-    :ok
-  end
-  def to_csv(atoms, td, ids, tdxids, count, file) do
-    [h_atom| t_atom] = atoms
-    [h_td| t_td] = td
-    [h_ids| t_ids] = ids
-    [h_tdxids| t_tdxids] = tdxids
-
-    IO.write(file, "#{Atom.to_string(h_atom)},#{h_td},#{h_ids},#{h_tdxids}\n")
-
-    to_csv(t_atom, t_td, t_ids, t_tdxids, count - 1, file)
-  end
-
-end
 ```
 
 y para frecuencia de término: frecuencia de documento inversa:
 
-``` {.elixir firstline="65" lastline="67"}
-defmodule Corpus do
-  @moduledoc """
-  Documentation for `Corpus`.
-  """
-  @doc"""
-  Devuelve la cantidad que el atomo aparece en la lista de documentos(una vez)
-  """
-  def atomo_en_lista(atomo, documentos) do
-    {
-      atomo,
-      for(x <- documentos, do: atomo in x)
-      |> Enum.reject(fn x -> x==false end)
-      |> length
-    }
-  end
-
-  @doc false
-  def main(args \\ "./textos/es.txt") do
-    case File.read(args) do
-      {:ok, body} ->
-        list_all_body = body
-        |> String.downcase
-        |> delete_simbols
-        |> String.split
-        |> lstring_to_latom
-        # Obtenemos la lista en de todas las palabras en átomos
-
-
-        freq_words_all_text = list_all_body
-        |> Enum.frequencies
-        |> Map.to_list
-        |> List.keysort(1)
-        |> Enum.reverse
-        # Obtenemos las concurrencia de las palabras del texto
-
-        ten_doc = Enum.chunk_every(list_all_body, 10)
-        # aqui cortamos a 10
-
-        vc = for(x <- list_all_body, do: atomo_en_lista(x, ten_doc))
-        |> List.keysort(1)
-        |> Enum.reverse
-        |> Enum.uniq
-        # Veces que aparece cada palabra en los 10 documentos
-
-        idf_list = for {x, _y} <- vc do
-          {x, :math.log10(length(ten_doc)/(vc[x])) }
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-
-        tf_list =  for {key_all, val_all} <- freq_words_all_text do
-          {key_all, val_all/length(list_all_body)}
-        end
-        |> List.keysort(0)
-        |> Enum.reverse
-        # Obenemos la Tf de cada palabra
-
-
-
-        ## Aqui, usando una libreria del autor, dibujamos un gráfico
-        ##
-        ## https://plotly.com
-        equis = for({x,_y}<-tf_list, do: x)
-        vals_idf = for {_x,y}<-idf_list, do: y
-        vals_tf = for {_x,y}<-tf_list, do: y
-        vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
-
-
-        tf = %{
-          x: equis,
-          y: vals_tf,
-          type: "scatter",
-          mode: 'lines+markers',
-          connectgaps: true,
-          name: "TF"
-        }
-
-        idf = %{
-          x: equis,
-          y: vals_idf,
-          type: "scatter",
-          name: "IDF"
-        }
-
-        # Producto de TF y IDF
-        tf_x_idf = %{
-          x: equis,
-          y: vals_tfxidf,
-          type: "scatter",
-          name: "tf*idf"
-        }
-
-        # dibujamos gráficos
-        [idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{IDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TFXIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-
-        [tf,idf,tf_x_idf]
-        |> PlotlyEx.plot(
-          %{
-            xaxis: %{
-              title: %{text: "$\\text{TF,IDF,TFxIDF}\\;$"},
-            },
-          })
-          |> PlotlyEx.show
-        # Terminamos de dibujar los gráficos
-
-        # escribimos el archivo por csv
-        file = File.open!('out.csv', [:write])
-        IO.write(file, "Palabra,TF,IDF,TDxIDF\n")
-        to_csv(equis, vals_tf, vals_idf, vals_tfxidf, length(equis), file)
-        File.close(file)
-        # terminamos de escribor el archivo
-
-
-        System.halt(0) # salida 0 a terminal
-
-      {:error, _error} ->
-        IO.puts "Error, verifique el archivo"
-        System.halt(1) #
-        # Salida a 1 en la terminal
-    end
-   end
-
-  @doc"""
-  Eliminamos los símbolos y palabras que no querramos, por ejemplo «de, la, los,...»
-  """
-  def delete_simbols(string) do
-    string #Regex.replace(~r/[,|;|\.|\(|\)|\d]+/, string, "")
-    |> String.replace(
-      ~r/,|;|\.|\(|\)|\d+|\sl(a|o)s?\s|\s+l(a|o)s\s|\sde(\sl(a|o)s?)?\s|\s(a|e|o)\s|\sy\s|\sel\s/u,
-    " "
-    )
-  end
-
-  @doc"""
-  Esta Funcion solo conbierte una lista con cadenas a atomos
-  """
-  def lstring_to_latom(list_string) do
-    for x <- list_string do
-      String.to_atom(x)
-    end
-  end
-
-  @doc"""
-  Esta funcion se encarga de llenar el archivo csv
-
-  | palabra | TF | IDF | TFxIDF |
-  """
-  def to_csv(_atoms, _td, _ids, _tdxids, count, _file) when count <= 1 do
-    :ok
-  end
-  def to_csv(atoms, td, ids, tdxids, count, file) do
-    [h_atom| t_atom] = atoms
-    [h_td| t_td] = td
-    [h_ids| t_ids] = ids
-    [h_tdxids| t_tdxids] = tdxids
-
-    IO.write(file, "#{Atom.to_string(h_atom)},#{h_td},#{h_ids},#{h_tdxids}\n")
-
-    to_csv(t_atom, t_td, t_ids, t_tdxids, count - 1, file)
-  end
-
-end
+```elixir
+vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
 ```
 
 Para obtener la gráficas se uso una biblioteca que usa ploty.js para
 renderizarla en un documento html
-(figura [1](#fig:1){reference-type="ref" reference="fig:1"}).\
-\
-\
-\
-\
-\
-
+(figura 1).
 ![Dercarga de svg generada por el doc html
-generado](./doc/output.jpg){#fig:1 width="\\linewidth"}
+generado](./doc/output.jpg)
 
 También se genera un archivo CSV para comparar resultados.
 
@@ -1056,12 +179,58 @@ También se genera un archivo CSV para comparar resultados.
   violen     0.000677   2.170261   0.00147
   ...        ...        ...        ...
 
-# Compilación y ejecución {#sec:compilacion}
 
-Usando un sistema arch linux, mediante el uso del gestor de paquetes
-ejecutar los siguientes comandos(como administrador) para instalar
-elixir, donde tambien instalará la máquina virtual de erlang.
+<a id="sec:compilacion"></a>
 
-``` {.shell-session}
+# Compilación y ejecución
+
+``` shell-session
 # pacman -S elixir
+```
+
+Clonamos el repositorio <https://github.com/tysyak/corpus.git>,
+obtenemos las dependencias y lo compilamos para generar el ejecutable
+para despues ejecutarlo como argumento el texto.
+
+``` shell-session
+sh-5.1$ git clone https://github.com/tysyak/corpus.git
+Clonando en 'corpus'...
+remote: Enumerating objects: 30, done.
+remote: Counting objects: 100% (30/30), done.
+remote: Compressing objects: 100% (20/20), done.
+remote: Total 30 (delta 6), reused 30 (delta 6), pack-reused 0
+Recibiendo objetos: 100% (30/30), 1.09 MiB | 2.57 MiB/s, listo.
+Resolviendo deltas: 100% (6/6), listo.
+sh-5.1$ cd corpus/
+sh-5.1$ mix deps.get
+* Getting plotly_ex (https://github.com/tysyak/plotly_ex.git)
+remote: Enumerating objects: 8, done.
+remote: Counting objects: 100% (8/8), done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 135 (delta 0), reused 6 (delta 0), pack-reused 127
+Resolving Hex dependencies...
+Dependency resolution completed:
+Unchanged:
+  jason 1.2.2
+* Getting jason (Hex package)
+sh-5.1$ mix escript.build
+==> jason
+Compiling 8 files (.ex)
+Generated jason app
+==> plotly_ex
+Compiling 2 files (.ex)
+Generated plotly_ex app
+==> corpus
+Compiling 1 file (.ex)
+Generated corpus app
+Generated escript corpus with MIX_ENV=dev
+sh-5.1$ ./corpus textos/es.txt
+listening on http://localhost:39715
+accepted. quitting...
+listening on http://localhost:44845
+accepted. quitting...
+listening on http://localhost:33977
+accepted. quitting...
+listening on http://localhost:46283
+accepted. quitting...
 ```
