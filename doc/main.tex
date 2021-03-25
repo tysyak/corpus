@@ -60,13 +60,13 @@ Entonces tf – idf se calcula como:
 \section{Desarrollo}\label{sec:desarrollo}
 
 Para calcular la frecuencia de término (sección~\ref{sec:frec-de-term}) se
-elimino los espacios, comas y palabras de poca utilidad para despues guradarlas
+elimino los espacios, comas y palabras de poca utilidad para después guardarlas
 en una lista; para el manejo del lenguaje se convirtieron en átomos cada palabra.
 \begin{code}
   \inputminted[firstline=5,lastline=26]{elixir}{../lib/corpus.ex}
 \end{code}
 
-Posteriormente obtemos la concurrencia de cada palabra (no se usa) en el texto,
+Posteriormente obtenemos la concurrencia de cada palabra (no se usa) en el texto,
 e inmediatamente se separa la palabras en listas de diez dentro de una lista.
 \begin{code}
   \inputminted[firstline=29,lastline=43]{elixir}{../lib/corpus.ex}
@@ -96,7 +96,7 @@ en un documento html (figura~\ref{fig:1}).
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{./output}
-  \caption{Dercarga de svg generada por el doc html generado}\label{fig:1}
+  \caption{Descarga de svg generada por el doc html generado}\label{fig:1}
 \end{figure}
 
 También se genera un archivo CSV para comparar resultados.
@@ -126,7 +126,7 @@ También se genera un archivo CSV para comparar resultados.
 
 Usando un sistema arch linux,
 mediante el uso del gestor de paquetes ejecutar los siguientes
-comandos(como administrador) para instalar elixir, donde tambien instalará
+comandos(como administrador) para instalar elixir, donde también instalará
 la máquina virtual de erlang.
 
 \begin{minted}{shell-session}
@@ -134,7 +134,7 @@ la máquina virtual de erlang.
 \end{minted}
 
 Clonamos el repositorio \url{https://github.com/tysyak/corpus.git}, obtenemos las
-dependencias y lo compilamos para generar el ejecutable para despues
+dependencias y lo compilamos para generar el ejecutable para después
 ejecutarlo como argumento el texto.
 \begin{minted}{shell-session}
 sh-5.1$ git clone https://github.com/tysyak/corpus.git

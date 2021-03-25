@@ -1,4 +1,3 @@
-
 # Table of Contents
 
 1.  [Introducción](#sec:introduccion)
@@ -85,7 +84,7 @@ Entonces tf &#x2013; idf se calcula como:
 
 Para calcular la frecuencia de término
 (sección [1.1](#sec:frec-de-term)) se elimino los espacios, comas y
-palabras de poca utilidad para despues guradarlas en una lista; para el
+palabras de poca utilidad para después guardarlas en una lista; para el
 manejo del lenguaje se convirtieron en átomos cada palabra.
 
 
@@ -107,7 +106,7 @@ manejo del lenguaje se convirtieron en átomos cada palabra.
         # Veces que aparece cada palabra en los 10 documentos
 ```
 
-Posteriormente obtemos la concurrencia de cada palabra (no se usa) en el
+Posteriormente obtenemos la concurrencia de cada palabra (no se usa) en el
 texto, e inmediatamente se separa la palabras en listas de diez dentro
 de una lista.
 
@@ -160,7 +159,7 @@ vals_tfxidf = for({x,y}<-Enum.zip(vals_tf,vals_idf), do: x*y)
 Para obtener la gráficas se uso una biblioteca que usa ploty.js para
 renderizarla en un documento html
 (figura 1).
-![Dercarga de svg generada por el doc html
+![Descarga de svg generada por el doc html
 generado](./doc/output.jpg)
 
 También se genera un archivo CSV para comparar resultados.
@@ -288,7 +287,7 @@ También se genera un archivo CSV para comparar resultados.
 
 Clonamos el repositorio <https://github.com/tysyak/corpus.git>,
 obtenemos las dependencias y lo compilamos para generar el ejecutable
-para despues ejecutarlo como argumento el texto.
+para después ejecutarlo como argumento el texto.
 
 ``` shell-session
 sh-5.1$ git clone https://github.com/tysyak/corpus.git
